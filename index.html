@@ -5,14 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Parallax Comic</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Preload critical images */
+        body::after {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 0;
+            overflow: hidden;
+            z-index: -1;
+            background-image: 
+                url('images/bg1.jpg'),
+                url('images/bg2.jpg'),
+                url('images/character1.png'),
+                url('images/character2.png');
+        }
+    </style>
 </head>
 <body>
     <div id="comic-container">
         <!-- Scene 1 -->
         <section class="comic-scene" id="scene1">
-            <div class="parallax-bg" data-speed="0.1" style="background-image: url('bg1.jpg');"></div>
+            <div class="parallax-bg" data-speed="0.1" style="background-image: url('images/bg1.jpg');"></div>
             <div class="parallax-mg" data-speed="0.3">
-                <img src="character1.png" class="character" alt="Main character">
+                <img src="images/character1.png" class="character" alt="Main character" loading="lazy">
             </div>
             <div class="comic-text" data-speed="0.5">
                 <div class="speech-bubble">Once upon a time...</div>
@@ -21,9 +37,9 @@
         
         <!-- Scene 2 -->
         <section class="comic-scene" id="scene2">
-            <div class="parallax-bg" data-speed="0.1" style="background-image: url('bg2.jpg');"></div>
+            <div class="parallax-bg" data-speed="0.1" style="background-image: url('images/bg2.jpg');"></div>
             <div class="parallax-mg" data-speed="0.4">
-                <img src="character2.png" class="character" alt="Main character">
+                <img src="images/character2.png" class="character" alt="Main character" loading="lazy">
             </div>
             <div class="comic-text" data-speed="0.6">
                 <div class="speech-bubble">The adventure began!</div>
