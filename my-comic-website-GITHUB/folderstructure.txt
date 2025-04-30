@@ -1,0 +1,9 @@
+my-comic-website/
+├── images/
+│   ├── bg1.jpg       (your background image)
+│   ├── bg2.jpg       (your background image)
+│   ├── character1.png (your character)
+│   └── character2.png (your character)
+├── index.html
+├── style.css
+└── script.js
