@@ -1,74 +1,109 @@
-// DOM Ready
 document.addEventListener('DOMContentLoaded', function() {
-    // Scroll Progress Indicator
+    // Elements
     const progressBar = document.getElementById('scroll-progress');
+    const scrollHint = document.getElementById('scroll-hint');
+    const comicContainer = document.getElementById('comic-container');
+    let isHorizontalActive = false;
+
+    // Track scroll direction
+    let lastScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
     
-    // Enhanced Parallax System
-    function updateParallax() {
-        // Update progress bar
-        const scrollTop = window.pageYOffset;
+    // Update UI based on scroll
+    function updateUI() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         const docHeight = document.documentElement.scrollHeight - window.innerHeight;
         const progress = (scrollTop / docHeight) * 100;
         progressBar.style.width = `${progress}%`;
         
-        // Parallax effect
+        // Hide/show scroll hint
+        const currentScene = getCurrentScene();
+        if (currentScene && currentScene.classList.contains('horizontal-expansion')) {
+            scrollHint.textContent = "→ Swipe sideways →";
+            isHorizontalActive = true;
+        } else {
+            scrollHint.textContent = "↓ Scroll down ↓";
+            isHorizontalActive = false;
+        }
+    }
+    
+    // Get current active scene
+    function getCurrentScene() {
         const scenes = document.querySelectorAll('.comic-scene');
+        let currentScene = null;
         
         scenes.forEach(scene => {
             const rect = scene.getBoundingClientRect();
-            const sceneCenter = rect.top + (rect.height / 2);
-            const viewportCenter = window.innerHeight / 2;
-            const distanceFromCenter = viewportCenter - sceneCenter;
-            
-            // Activate scene when centered
-            if (Math.abs(distanceFromCenter) < window.innerHeight * 0.4) {
-                scene.classList.add('active');
-            } else {
-                scene.classList.remove('active');
+            if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+                currentScene = scene;
             }
+        });
+        
+        return currentScene;
+    }
+    
+    // Parallax effect for vertical scenes
+    function updateVerticalParallax() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        document.querySelectorAll('.comic-scene:not(.horizontal-expansion) [data-depth]').forEach(element => {
+            const speed = parseFloat(element.getAttribute('data-speed'));
+            const yOffset = scrollTop * speed;
+            element.style.transform = `translate3d(0, ${yOffset}px, 0)`;
+        });
+    }
+    
+    // Parallax effect for horizontal scenes
+    function updateHorizontalParallax() {
+        document.querySelectorAll('.horizontal-expansion').forEach(panelContainer => {
+            const rect = panelContainer.getBoundingClientRect();
+            const scrollLeft = panelContainer.scrollLeft;
+            const width = panelContainer.scrollWidth - panelContainer.clientWidth;
+            const progress = scrollLeft / width;
             
-            // Apply parallax to layers
-            scene.querySelectorAll('[data-depth]').forEach(layer => {
-                const depth = parseFloat(layer.dataset.depth);
-                const yOffset = distanceFromCenter * depth * 0.2;
-                
-                layer.style.transform = `
-                    translate3d(0, ${yOffset}px, 0)
-                    scale(${1 + depth * 0.5})
-                `;
-                
-                // Depth-based opacity
-                layer.style.opacity = 1 - Math.abs(distanceFromCenter / window.innerHeight) * depth;
+            panelContainer.querySelectorAll('.parallax-bg').forEach(bg => {
+                const offset = progress * 100;
+                bg.style.transform = `translateX(${offset}px)`;
             });
         });
     }
     
-    // Smooth Scroll Handling
-    let isTicking = false;
-    window.addEventListener('scroll', function() {
-        if (!isTicking) {
-            window.requestAnimationFrame(function() {
-                updateParallax();
-                isTicking = false;
-            });
-            isTicking = true;
+    // Handle wheel events for horizontal scrolling
+    function handleWheelEvents(e) {
+        if (!isHorizontalActive) return;
+        
+        const currentScene = getCurrentScene();
+        if (currentScene && currentScene.classList.contains('horizontal-expansion')) {
+            // Check if wheel is primarily vertical
+            if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+                currentScene.scrollLeft += e.deltaY * 2;
+                e.preventDefault();
+                updateHorizontalParallax();
+                return false;
+            }
         }
+    }
+    
+    // Event Listeners
+    window.addEventListener('scroll', function() {
+        updateUI();
+        updateVerticalParallax();
+    }, { passive: true });
+    
+    window.addEventListener('wheel', handleWheelEvents, { passive: false });
+    
+    document.querySelectorAll('.horizontal-expansion').forEach(panel => {
+        panel.addEventListener('scroll', updateHorizontalParallax, { passive: true });
     });
+    
+    // Mobile touch detection
+    if ('ontouchstart' in window) {
+        document.querySelectorAll('.horizontal-expansion').forEach(panel => {
+            panel.style.overflowX = 'auto';
+        });
+        console.log('Mobile touch detected - horizontal scrolling enabled');
+    }
     
     // Initial setup
-    updateParallax();
-    
-    // Bonus: Mouse Tilt Effect
-    document.addEventListener('mousemove', function(e) {
-        const x = e.clientX / window.innerWidth - 0.5;
-        const y = e.clientY / window.innerHeight - 0.5;
-        
-        document.querySelectorAll('.character').forEach(char => {
-            char.style.transform = `
-                rotateY(${x * 10}deg)
-                rotateX(${y * -5}deg)
-                translateY(${y * -20}px)
-            `;
-        });
-    });
+    updateUI();
+    updateVerticalParallax();
 });
