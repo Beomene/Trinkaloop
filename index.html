@@ -3,49 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Parallax Comic</title>
+    <title>Immersive Parallax Comic</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        /* Preload critical images */
-        body::after {
-            content: "";
-            position: absolute;
-            width: 0;
-            height: 0;
-            overflow: hidden;
-            z-index: -1;
-            background-image: 
-                url('images/bg1.jpg'),
-                url('images/bg2.jpg'),
-                url('images/character1.png'),
-                url('images/character2.png');
-        }
-    </style>
 </head>
 <body>
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress"></div>
+
     <div id="comic-container">
         <!-- Scene 1 -->
         <section class="comic-scene" id="scene1">
-            <div class="parallax-bg" data-speed="0.1" style="background-image: url('images/bg1.jpg');"></div>
-            <div class="parallax-mg" data-speed="0.3">
-                <img src="images/character1.png" class="character" alt="Main character" loading="lazy">
+            <div class="parallax-space" data-depth="0.05" style="background-image: url('images/bg-stars.jpg');"></div>
+            <div class="parallax-bg" data-depth="0.1" style="background-image: url('images/bg-mountains.jpg');"></div>
+            <div class="parallax-mg" data-depth="0.3" style="background-image: url('images/mg-trees.png');"></div>
+            <div class="parallax-fg" data-depth="0.6" style="background-image: url('images/fg-foliage.png');"></div>
+            <div class="character-container" data-depth="0.8">
+                <img src="images/hero.png" class="character" alt="Main character">
             </div>
-            <div class="comic-text" data-speed="0.5">
-                <div class="speech-bubble">Once upon a time...</div>
+            <div class="comic-text" data-depth="1">
+                <div class="speech-bubble">"What a strange new world..."</div>
             </div>
         </section>
-        
+
+        <!-- Scene Transition -->
+        <div class="scene-transition">
+            <div class="transition-mask"></div>
+        </div>
+
         <!-- Scene 2 -->
         <section class="comic-scene" id="scene2">
-            <div class="parallax-bg" data-speed="0.1" style="background-image: url('images/bg2.jpg');"></div>
-            <div class="parallax-mg" data-speed="0.4">
-                <img src="images/character2.png" class="character" alt="Main character" loading="lazy">
+            <div class="parallax-space" data-depth="0.05" style="background-image: url('images/bg-space.jpg');"></div>
+            <div class="parallax-bg" data-depth="0.1" style="background-image: url('images/bg-planet.jpg');"></div>
+            <div class="parallax-mg" data-depth="0.3">
+                <img src="images/spaceship.png" class="character" alt="Spaceship">
             </div>
-            <div class="comic-text" data-speed="0.6">
-                <div class="speech-bubble">The adventure began!</div>
+            <div class="comic-text" data-depth="1">
+                <div class="speech-bubble">"To infinity and beyond!"</div>
             </div>
         </section>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
