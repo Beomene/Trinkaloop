@@ -1,23 +1,32 @@
+/* Base Styles */
 body {
     margin: 0;
     padding: 0;
     font-family: 'Comic Sans MS', cursive, sans-serif;
     overflow-x: hidden;
+    background: #000;
 }
 
+/* Comic Container */
 #comic-container {
     perspective: 1px;
     height: 100vh;
     overflow-x: hidden;
     overflow-y: auto;
+    scroll-behavior: smooth;
 }
 
+/* Scene Styling */
 .comic-scene {
     position: relative;
     height: 100vh;
     transform-style: preserve-3d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+/* Parallax Layers */
 .parallax-bg {
     position: absolute;
     top: 0;
@@ -26,6 +35,7 @@ body {
     bottom: 0;
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
     z-index: 1;
 }
 
@@ -35,23 +45,27 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
     z-index: 2;
 }
 
 .character {
-    position: absolute;
     max-height: 70vh;
-    bottom: 10%;
-    left: 50%;
-    transform: translateX(-50%);
+    max-width: 90%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
 }
 
+/* Text Elements */
 .comic-text {
-    position: absolute;
+    position: relative;
     z-index: 10;
-    bottom: 20%;
     width: 100%;
     text-align: center;
+    padding: 0 20px;
+    box-sizing: border-box;
 }
 
 .speech-bubble {
@@ -62,6 +76,8 @@ body {
     padding: 15px 20px;
     max-width: 300px;
     position: relative;
+    font-size: 1.2rem;
+    box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
 }
 
 .speech-bubble:after {
@@ -73,4 +89,16 @@ body {
     border-width: 15px 15px 0;
     border-style: solid;
     border-color: white transparent;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .speech-bubble {
+        font-size: 1rem;
+        max-width: 250px;
+    }
+    
+    .character {
+        max-height: 50vh;
+    }
 }
