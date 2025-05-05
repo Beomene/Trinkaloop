@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trinkaloop Saga</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="/Trinkaloop/css/base.css">
+    <!-- Preloader styling -->
+    <style>
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'ChelseaMarket', sans-serif;
+            color: white;
+            transition: opacity 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <!-- Preloader -->
+    <div id="preloader">Loading the Trinkaloop Saga...</div>
+    
+    <!-- Parallax Container -->
+    <div id="parallax-world">
+        <!-- Scenes injected by scenes.js -->
+    </div>
+
+    <!-- JavaScript -->
+    <script src="/Trinkaloop/js/parallax.js" defer></script>
+    <script src="/Trinkaloop/js/scenes.js" defer></script>
+    <script src="/Trinkaloop/js/desktop.js" defer></script>
+    
+    <!-- Enhanced Mobile Redirect -->
+    <script>
+        if ((window.innerWidth < 1200 || window.innerHeight > window.innerWidth) 
+            && !window.location.href.includes('mobile.html')) {
+            window.location.href = "/Trinkaloop/mobile.html";
+        }
+        
+        window.addEventListener('load', () => {
+            document.getElementById('preloader').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('preloader').remove();
+            }, 500);
+        });
+    </script>
+</body>
+</html>

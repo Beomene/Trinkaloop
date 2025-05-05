@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trinkaloop Saga (Mobile)</title>
+    <link rel="stylesheet" href="/Trinkaloop/css/mobile.css">
+    <style>
+        @font-face {
+            font-family: 'ChelseaMarket';
+            src: url('/Trinkaloop/fonts/ChelseaMarket-Regular.woff2') format('woff2');
+            font-display: swap;
+        }
+        body {
+            font-family: 'ChelseaMarket', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div id="orientation-warning">
+        <p>✨ For the best experience, please rotate your device to landscape mode ✨</p>
+        <button id="proceed-button">Continue Anyway</button>
+    </div>
+    
+    <div id="mobile-comic">
+        <!-- Content loaded by mobile.js -->
+    </div>
+
+    <script>
+        document.getElementById('proceed-button').addEventListener('click', () => {
+            document.getElementById('orientation-warning').style.display = 'none';
+        });
+        
+        if (window.innerWidth > window.innerHeight) {
+            document.getElementById('orientation-warning').style.display = 'none';
+        }
+        
+        // Prevent desktop users from getting stuck on mobile version
+        if (window.innerWidth >= 1200 && window.innerHeight < window.innerWidth) {
+            window.location.href = "/Trinkaloop/";
+        }
+    </script>
+</body>
+</html>
