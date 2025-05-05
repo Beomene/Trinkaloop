@@ -16,15 +16,14 @@ class ParallaxEngine {
     cacheElements() {
         this.layers = Array.from(document.querySelectorAll('.layer'));
         this.viewportCenter = window.innerWidth / 2;
+        this.sceneHeight = document.querySelector('.parallax-scene')?.offsetHeight || 2160;
     }
 
     setupEvents() {
-        // Single throttled event listener
         window.addEventListener('scroll', () => {
             this.scrollY = window.scrollY;
         }, { passive: true });
 
-        // Unified pointer input handler
         const handlePointerMove = (e) => {
             this.mouseX = e.clientX || e.touches[0].clientX;
         };
@@ -32,26 +31,20 @@ class ParallaxEngine {
         window.addEventListener('mousemove', handlePointerMove);
         window.addEventListener('touchmove', handlePointerMove, { passive: true });
         
-        // Cleanup on orientation change
         window.addEventListener('resize', () => {
             this.viewportCenter = window.innerWidth / 2;
         });
     }
 
-    applyParallax() {
-        const baseSpeed = 0.1; // Default multiplier
-        
+    animate() {
         this.layers.forEach(layer => {
-            const speed = parseFloat(layer.dataset.speed) || baseSpeed;
+            const speed = parseFloat(layer.dataset.speed) || 0.1;
             const yOffset = this.scrollY * speed;
             const xOffset = (this.viewportCenter - this.mouseX) * speed * 0.1;
             
             layer.style.transform = `translate3d(${xOffset}px, ${yOffset}px, 0)`;
         });
-    }
-
-    animate() {
-        this.applyParallax();
+        
         this.rafId = requestAnimationFrame(() => this.animate());
     }
 
@@ -60,7 +53,5 @@ class ParallaxEngine {
     }
 }
 
-// Initialize with DOM readiness check
-document.readyState === 'complete' 
-    ? new ParallaxEngine() 
-    : window.addEventListener('load', () => new ParallaxEngine());
+// Initialize
+document.addEventListener('DOMContentLoaded', () => new ParallaxEngine());

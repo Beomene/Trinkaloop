@@ -111,3 +111,25 @@
 .hyperdistal-layer, .distal-layer {
     filter: blur(1px) brightness(0.9);
 }
+#parallax-world {
+    overflow-y: auto !important; /* Force scrollbar */
+    height: auto !important; /* Remove fixed height */
+}
+
+.parallax-scene {
+    min-height: 2160px; /* Match tallest sky height */
+}
+.layer {
+    opacity: 1 !important; /* Override any hiding */
+    z-index: var(--z-index); /* Add this property */
+}
+/* Ensure scenes stack vertically */
+.parallax-scene {
+    display: block;
+    margin-bottom: 0;
+}
+
+/* Padding scenes */
+#padding_top, #padding_bottom {
+    pointer-events: none; /* Allow clicking through */
+}
