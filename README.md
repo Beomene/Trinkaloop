@@ -19,15 +19,15 @@ An immersive parallax-scrolling comic experience designed for desktop displays.
 
 ## Project Structure
 /Trinkaloop
-├── assets/
-│ ├── scenes/ # Scene assets organized by chapter
-│ ├── images/
-│ │ ├── characters/ # Sprite sheets
-│ │ └── ui/ # Interface elements
-│ └── fonts/
-├── css/
-│ └── base.css # Main stylesheet
-└── js/
-├── parallax.js # Core engine (v2.1)
-├── scenes.js # Scene loader (v1.4)
-└── sprites.js # Animation handler
+├── assets/ <br>
+│ ├── scenes/ # Scene assets organized by chapter<br>
+│ ├── images/<br>
+│ │ ├── characters/ # Sprite sheets<br>
+│ │ └── ui/ # Interface elements<br>
+│ └── fonts/<br>
+├── css/<br>
+│ └── base.css # Main stylesheet<br>
+└── js/<br>
+├── parallax.js # Core engine (v2.1)<br>
+├── scenes.js # Scene loader (v1.4)<br>
+└── sprites.js # Animation handler<br>
