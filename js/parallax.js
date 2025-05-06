@@ -16,27 +16,26 @@ class ParallaxEngine {
     cacheElements() {
         this.layers = Array.from(document.querySelectorAll('.layer'));
         this.viewportCenter = window.innerWidth / 2;
-        this.sceneHeight = document.querySelector('.parallax-scene')?.offsetHeight || 2160;
     }
 
     setupEvents() {
+        // Robust event listener with null checks
+        const handlePointerMove = (e) => {
+            if (!e) return;
+            this.mouseX = (e.clientX || e.touches?.[0]?.clientX || this.viewportCenter);
+        };
+
         window.addEventListener('scroll', () => {
-            this.scrollY = window.scrollY;
+            this.scrollY = window.scrollY || window.pageYOffset;
         }, { passive: true });
 
-        const handlePointerMove = (e) => {
-            this.mouseX = e.clientX || e.touches[0].clientX;
-        };
-        
         window.addEventListener('mousemove', handlePointerMove);
         window.addEventListener('touchmove', handlePointerMove, { passive: true });
-        
-        window.addEventListener('resize', () => {
-            this.viewportCenter = window.innerWidth / 2;
-        });
     }
 
     animate() {
+        if (!this.layers.length) return;
+        
         this.layers.forEach(layer => {
             const speed = parseFloat(layer.dataset.speed) || 0.1;
             const yOffset = this.scrollY * speed;
@@ -47,11 +46,9 @@ class ParallaxEngine {
         
         this.rafId = requestAnimationFrame(() => this.animate());
     }
-
-    destroy() {
-        if (this.rafId) cancelAnimationFrame(this.rafId);
-    }
 }
 
-// Initialize
-document.addEventListener('DOMContentLoaded', () => new ParallaxEngine());
+// Safer initialization
+if (document.getElementById('parallax-world')) {
+    new ParallaxEngine();
+}
